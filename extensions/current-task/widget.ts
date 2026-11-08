@@ -29,6 +29,6 @@ export function renderTask(
   return [
     theme.fg(color, `─ 当前任务 · ${LABELS[activity]}${pinned}`),
     theme.fg("accent", "  ") +
-      theme.bold(state.summary ?? "等待任务概括 · /task 设置一句话"),
+      theme.bold(state.summary ?? "等待第一个任务 · 收到请求后自动概括"),
   ].map((line) => truncateToWidth(line, width, "…"));
 }

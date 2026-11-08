@@ -49,6 +49,10 @@ test("Pi loads the extension; commands/tools persist and restore only the active
     const errors: string[] = [];
     runner.onError((error) => errors.push(error.error));
     await runner.emit({ type: "session_start", reason: "startup" });
+    // No /task command and no set_current_task call: old sessions get a default automatically.
+    const automatic = session.getLeafEntry();
+    assert.ok(automatic?.type === "custom");
+    assert.equal(parseState(automatic.data).summary, "Plugin acceptance test");
     const command = runner.getCommand("task");
     const tool = runner.getToolDefinition("set_current_task");
     assert.ok(command);
@@ -167,6 +171,37 @@ test("Pi loads the extension; commands/tools persist and restore only the active
       resumedPrompt.systemPromptOptions.sections.current_task_banner ?? "",
       /pinned/,
     );
+    const freshLoaded = await discoverAndLoadExtensions(
+      [resolve("extensions/current-task/index.ts")],
+      cwd,
+      dir,
+    );
+    assert.deepEqual(freshLoaded.errors, []);
+    const freshSession = SessionManager.inMemory(cwd);
+    freshLoaded.runtime.appendEntry = (type, data) => {
+      freshSession.appendCustomEntry(type, data);
+    };
+    const freshRunner = new ExtensionRunner(
+      freshLoaded.extensions,
+      freshLoaded.runtime,
+      cwd,
+      freshSession,
+      new ModelRegistry(models),
+    );
+    freshRunner.onError((error) => errors.push(error.error));
+    await freshRunner.emit({ type: "session_start", reason: "new" });
+    assert.equal(
+      freshSession.getLeafEntry(),
+      undefined,
+      "empty sessions must not invent a task",
+    );
+    await freshRunner.emitBeforeAgentStart(
+      { messageType: "user", prompt: "修复默认生成任务概括" },
+      { cwd },
+    );
+    const firstRequest = freshSession.getLeafEntry();
+    assert.ok(firstRequest?.type === "custom");
+    assert.equal(parseState(firstRequest.data).summary, "修复默认生成任务概括");
     assert.deepEqual(errors, []);
   } finally {
     await rm(dir, { recursive: true, force: true });

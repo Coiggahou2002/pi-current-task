@@ -44,7 +44,7 @@ test("render reflects state and current theme, without implying completion", () 
   }
   assert.match(
     renderTask(initialState(), "idle", 80, theme).join("\n"),
-    /等待任务概括/,
+    /收到请求后自动概括/,
   );
   assert.deepEqual(
     renderTask({ ...initialState(), visible: false }, "idle", 80, theme),
