@@ -37,10 +37,14 @@ export default function currentTask(pi: ExtensionAPI): void {
       ctx.ui.setWidget(WIDGET_KEY, undefined);
       return;
     }
-    ctx.ui.setWidget(WIDGET_KEY, (_tui, theme) => ({
-      render: (width) => renderTask(state, activity.value, width, theme),
-      invalidate() {},
-    }));
+    ctx.ui.setWidget(
+      WIDGET_KEY,
+      (_tui, theme) => ({
+        render: (width) => renderTask(state, activity.value, width, theme),
+        invalidate() {},
+      }),
+      { placement: "belowEditor" },
+    );
   }
 
   function persist(next: TaskState, ctx: ExtensionContext): void {

@@ -26,9 +26,8 @@ export function renderTask(
           ? "accent"
           : "muted";
   const pinned = state.mode === "manual" ? " · 固定" : "";
-  return [
-    theme.fg(color, `─ 当前任务 · ${LABELS[activity]}${pinned}`),
-    theme.fg("accent", "  ") +
-      theme.bold(state.summary ?? "等待第一个任务 · 收到请求后自动概括"),
-  ].map((line) => truncateToWidth(line, width, "…"));
+  const line =
+    theme.fg(color, `${LABELS[activity]}${pinned} · `) +
+    theme.bold(state.summary ?? "等待第一个任务 · 收到请求后自动概括");
+  return [truncateToWidth(line, width, "…")];
 }

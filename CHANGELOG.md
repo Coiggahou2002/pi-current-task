@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.1
+
+- Move the task banner below the input editor and condense status and summary into one terminal row.
+- Keep width-aware truncation, manual-pin indication, and the existing footer intact.
+
 ## 0.2.0
 
 - Generate task summaries inside the plugin by default, independently of main-agent tool calls.

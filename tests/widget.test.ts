@@ -19,6 +19,7 @@ test("mixed scripts and emoji fit every terminal width, including zero", () => {
   };
   for (const width of [0, 1, 2, 5, 10, 20, 40, 80, 120]) {
     const lines = renderTask(state, "running", width, theme);
+    assert.equal(lines.length, width > 0 ? 1 : 0);
     for (const line of lines)
       assert.ok(visibleWidth(line) <= width, `${width}: ${line}`);
   }
@@ -52,7 +53,7 @@ test("render reflects state and current theme, without implying completion", () 
   );
   const colored = { ...theme, bold: (text: string) => `\x1b[1m${text}\x1b[0m` };
   assert.match(
-    renderTask(initialState(), "idle", 80, colored)[1] ?? "",
+    renderTask(initialState(), "idle", 80, colored)[0] ?? "",
     /\x1b\[1m/,
   );
 });

@@ -2,13 +2,13 @@
 
 **Know what this Pi terminal is working on, at a glance.**
 
-A small [Pi](https://github.com/earendil-works/pi) extension that keeps a one-sentence task banner above the input editor. Built for switching between several terminal sessions without losing track of their purpose.
+A small [Pi](https://github.com/earendil-works/pi) extension that keeps a one-sentence single-line task banner below the input editor. Built for switching between several terminal sessions without losing track of their purpose.
 
 ```text
-─ 当前任务 · 进行中
-  为 Cradle 实现登录鉴权，并验证端到端流程
 ────────────────────────────────────────────────────
 > …
+────────────────────────────────────────────────────
+进行中 · 为 Cradle 实现登录鉴权，并验证端到端流程
 ```
 
 ## Install
@@ -59,7 +59,7 @@ pi -e ./extensions/current-task/index.ts
 | `/task help`                   | Show command help                                               |
 | `/task set auto`               | Pin the literal word `auto` (likewise for other reserved words) |
 
-Summaries allow 1–160 Unicode code points. Whitespace is collapsed and terminal control sequences are stripped. Long summaries are truncated to the available terminal columns; `/task` shows the full text. The banner takes two rows and preserves Pi's existing header, footer, editor, and keybindings.
+Summaries allow 1–160 Unicode code points. Whitespace is collapsed and terminal control sequences are stripped. Long summaries are truncated to the available terminal columns; `/task` shows the full text. The banner takes one row below the editor and above the footer, and preserves Pi's existing header, footer, editor, and keybindings.
 
 ### Status is not completion
 
